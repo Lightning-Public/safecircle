@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#ffffff" />
+  <meta name="theme-color" content="#f7f8fb" />
   <meta name="description" content="SafeCircle mobile prototype" />
   <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="stylesheet" href="./styles.css" />
@@ -13,76 +13,159 @@
   <div class="app-shell">
     <header class="topbar">
       <div>
-        <p class="eyebrow">SafeCircle Prototype</p>
-        <h1>서로 다르게 이해한 지점을 찾습니다</h1>
+        <p class="eyebrow">SafeCircle</p>
+        <h1>서로의 뜻이 만나는 곳</h1>
       </div>
       <span id="networkBadge" class="status-badge" aria-live="polite">확인 중</span>
     </header>
 
     <main id="appMain" class="main" tabindex="-1">
       <section class="view active" data-view="help">
-        <div class="hero-card" id="helpStart">
-          <p class="kicker">상호이해</p>
-          <h2>이 말, 상대방에게 어떻게 들릴까?</h2>
-          <p>전달하기 전이나 받은 말을 이해하기 어려울 때 확인해보세요.</p>
-          <div class="stack">
-            <button class="primary mode-button" data-mode="before_send">전달 전 확인</button>
-            <button class="secondary mode-button" data-mode="understand_received">받은 말 이해</button>
+        <section id="helpStart">
+          <div class="intro-block">
+            <p class="kicker">오늘 누구와 이야기하시나요?</p>
+            <h2>번역보다 먼저, 서로의 뜻을 확인해요.</h2>
+            <p class="intro-copy">말의 뜻이 다르게 전해질 수 있는 지점을 찾고, 더 쉽게 다시 이야기할 수 있도록 도와드립니다.</p>
           </div>
-        </div>
 
-        <form id="mediationForm" class="info-card hidden">
-          <label>관계
-            <select id="relationship">
-              <option value="manager-worker">관리자 → 근로자</option>
-              <option value="worker-manager">근로자 → 관리자</option>
-              <option value="peer-peer">동료 ↔ 동료</option>
-            </select>
-          </label>
-          <label>상황
-            <select id="domain">
-              <option value="workplace_instruction">업무 지시</option>
-              <option value="leave_schedule">휴가·근무시간</option>
-              <option value="safety">안전수칙</option>
-            </select>
-          </label>
-          <label>문장
-            <textarea id="message" rows="4" required placeholder="확인할 문장을 입력하세요."></textarea>
-          </label>
-          <div class="sample-row">
-            <button type="button" class="chip sample" data-sample="내일부터 30분 일찍 나오세요.">예시 1</button>
-            <button type="button" class="chip sample" data-sample="왜 이것도 아직 안 했어요?">예시 2</button>
-            <button type="button" class="chip sample" data-sample="기계 멈추면 바로 만지지 말고 관리자 부르세요.">예시 3</button>
+          <div class="action-grid">
+            <button class="journey-card mode-button" data-mode="before_send">
+              <span class="journey-icon" aria-hidden="true">🎙️</span>
+              <span>
+                <strong>말로 전하기</strong>
+                <small>내 뜻이 잘 전달되도록 도와드려요</small>
+              </span>
+              <span aria-hidden="true">›</span>
+            </button>
+            <button class="journey-card mode-button" data-mode="understand_received">
+              <span class="journey-icon" aria-hidden="true">👂</span>
+              <span>
+                <strong>들은 말 이해하기</strong>
+                <small>무슨 뜻인지 헷갈릴 때 확인해요</small>
+              </span>
+              <span aria-hidden="true">›</span>
+            </button>
+            <button class="journey-card mode-button featured" data-mode="together">
+              <span class="journey-icon" aria-hidden="true">🤝</span>
+              <span>
+                <strong>같이 이야기하기</strong>
+                <small>한 휴대폰으로 서로 직접 확인해요</small>
+              </span>
+              <span aria-hidden="true">›</span>
+            </button>
           </div>
-          <button class="primary full" type="submit">어떻게 들릴지 확인</button>
+
+          <button class="safety-shortcut nav-shortcut" data-target="safety">
+            <span aria-hidden="true">🛟</span>
+            <span>
+              <strong>안전 정보</strong>
+              <small>인터넷이 없어도 승인된 비상정보를 확인할 수 있어요</small>
+            </span>
+          </button>
+        </section>
+
+        <form id="mediationForm" class="conversation-form hidden">
+          <button type="button" id="backToStart" class="text-button">← 처음으로</button>
+          <div class="form-heading">
+            <p class="kicker" id="formModeLabel">말로 전하기</p>
+            <h2 id="formTitle">어떤 말을 전하고 싶나요?</h2>
+          </div>
+
+          <div class="context-row">
+            <label>관계
+              <select id="relationship">
+                <option value="manager-worker">관리자 → 근로자</option>
+                <option value="worker-manager">근로자 → 관리자</option>
+                <option value="peer-peer">동료 ↔ 동료</option>
+              </select>
+            </label>
+            <label>상황
+              <select id="domain">
+                <option value="workplace_instruction">업무 지시</option>
+                <option value="leave_schedule">휴가·근무시간</option>
+                <option value="safety">안전수칙</option>
+              </select>
+            </label>
+          </div>
+
+          <label class="message-label">말 또는 문장
+            <textarea id="message" rows="5" required placeholder="여기에 입력하거나 마이크를 눌러 말해보세요."></textarea>
+          </label>
+
+          <button type="button" id="voiceInputButton" class="voice-button">
+            <span aria-hidden="true">🎙️</span>
+            <span id="voiceInputText">말로 입력하기</span>
+          </button>
+          <small id="voiceSupportNote" class="support-note">브라우저가 음성입력을 지원하지 않으면 글로 입력할 수 있습니다.</small>
+
+          <div class="sample-row">
+            <button type="button" class="chip sample" data-sample="내일부터 30분 일찍 나오세요.">업무시간</button>
+            <button type="button" class="chip sample" data-sample="왜 이것도 아직 안 했어요?">업무지시</button>
+            <button type="button" class="chip sample" data-sample="기계 멈추면 바로 만지지 말고 관리자 부르세요.">안전수칙</button>
+          </div>
+
+          <button class="primary full" type="submit">서로 다르게 들릴 수 있는지 확인</button>
         </form>
 
         <section id="mediationResult" class="hidden" aria-live="polite">
-          <div class="result-card">
-            <p class="kicker">문자 그대로의 의미</p>
-            <p id="literalMeaning"></p>
+          <button type="button" id="backToForm" class="text-button">← 문장 다시 보기</button>
+
+          <div class="result-heading">
+            <p class="kicker">Meaning Mirror</p>
+            <h2>같은 말도 다르게 들릴 수 있어요.</h2>
           </div>
-          <div class="result-card">
-            <p class="kicker">다르게 받아들일 수 있는 부분</p>
-            <ul id="interpretationRisks"></ul>
+
+          <div class="mirror">
+            <article class="mirror-side">
+              <span class="mirror-label">내가 전하려던 뜻</span>
+              <p id="literalMeaning"></p>
+            </article>
+            <div class="mirror-gap">
+              <span aria-hidden="true">↕</span>
+              <strong>이 지점을 확인해보세요</strong>
+            </div>
+            <article class="mirror-side alternate">
+              <span class="mirror-label">상대에게 이렇게 들릴 수도 있어요</span>
+              <p id="primaryRisk"></p>
+            </article>
           </div>
-          <div class="result-card" id="factsCard">
-            <p class="kicker">확인해야 할 사실</p>
-            <ul id="factsToConfirm"></ul>
-          </div>
-          <div class="result-card">
-            <p class="kicker">확인 질문</p>
-            <ul id="questionsToConfirm"></ul>
-          </div>
-          <div class="result-card emphasis">
-            <p class="kicker">더 쉬운 표현</p>
-            <p id="suggestedRephrase"></p>
-          </div>
-          <div id="escalationNotice" class="info-card hidden"></div>
-          <div class="info-card">
-            <strong>이 결과는 판정이 아닙니다.</strong>
-            <p>문화적 해석은 가능성으로만 표시하며, 규정·노동·안전 문제는 공식정보나 사람의 확인이 필요할 수 있습니다.</p>
-          </div>
+
+          <article class="say-card">
+            <p class="kicker">다시 말한다면</p>
+            <h3>이렇게 말해보세요</h3>
+            <p id="suggestedRephrase" class="suggested-sentence"></p>
+            <div class="action-buttons">
+              <button id="speakSuggestion" type="button" class="primary action-button">🔊 들려주기</button>
+              <button id="copySuggestion" type="button" class="secondary action-button">복사</button>
+              <button id="passPhoneButton" type="button" class="secondary action-button">🤝 같이 확인하기</button>
+            </div>
+            <small id="actionStatus"></small>
+          </article>
+
+          <article class="context-hint">
+            <span aria-hidden="true">💡</span>
+            <div>
+              <strong>맥락 참고</strong>
+              <p id="contextHint"></p>
+            </div>
+          </article>
+
+          <details class="details-panel">
+            <summary>왜 이렇게 바꿨나요?</summary>
+            <div class="details-content">
+              <section id="factsCard">
+                <strong>확인해야 할 사실</strong>
+                <ul id="factsToConfirm"></ul>
+              </section>
+              <section>
+                <strong>확인하면 좋은 질문</strong>
+                <ul id="questionsToConfirm"></ul>
+              </section>
+              <div id="escalationNotice" class="notice hidden"></div>
+              <p class="trust-copy">이 결과는 판정이 아닙니다. 문화적 해석은 가능성으로만 표시하며, 규정·노동·안전 문제는 공식정보나 사람의 확인이 필요할 수 있습니다.</p>
+            </div>
+          </details>
+
           <div class="feedback-card">
             <strong>설명이 실제 의도와 비슷했나요?</strong>
             <div class="feedback-actions">
@@ -92,13 +175,40 @@
             </div>
             <small id="feedbackStatus"></small>
           </div>
+
           <button id="resetMediation" class="secondary full" type="button">다른 문장 확인</button>
         </section>
 
-        <div class="info-card">
-          <strong>AI는 판정하지 않습니다.</strong>
-          <p>가능한 해석 차이와 확인할 질문을 정리하고, 필요한 경우 사람이나 공식정보로 연결합니다.</p>
-        </div>
+        <section id="passPhonePanel" class="pass-phone hidden" aria-live="polite">
+          <div id="passStepHandOver">
+            <p class="pass-icon" aria-hidden="true">🤲</p>
+            <p class="kicker">같이 확인하기</p>
+            <h2>휴대폰을 상대에게 건네주세요.</h2>
+            <p>가입하지 않아도 이 화면에서 직접 확인할 수 있어요.</p>
+            <button id="showPartnerView" type="button" class="primary full">상대방 화면 열기</button>
+            <button id="cancelPassPhone" type="button" class="text-button full">취소</button>
+          </div>
+
+          <div id="partnerView" class="hidden">
+            <p class="kicker">상대방 확인 화면</p>
+            <h2>이 뜻으로 이해하면 될까요?</h2>
+            <p id="partnerSentence" class="partner-sentence"></p>
+            <button id="speakPartner" type="button" class="voice-button full">🔊 들어보기</button>
+            <div class="partner-actions">
+              <button type="button" class="partner-response" data-response="understood">이해했어요</button>
+              <button type="button" class="partner-response" data-response="different">다르게 이해했어요</button>
+              <button type="button" class="partner-response" data-response="question">질문 있어요</button>
+            </div>
+          </div>
+
+          <div id="returnView" class="hidden">
+            <p class="pass-icon" aria-hidden="true">↩️</p>
+            <p class="kicker">응답 완료</p>
+            <h2>휴대폰을 다시 돌려주세요.</h2>
+            <p id="partnerResponseSummary"></p>
+            <button id="finishPassPhone" type="button" class="primary full">내 화면으로 돌아가기</button>
+          </div>
+        </section>
       </section>
 
       <section class="view" data-view="info">
@@ -131,7 +241,10 @@
             <small id="bundleVersion"></small>
           </div>
           <div class="result-card emergency-actions">
-            <p class="kicker">화재 행동카드</p>
+            <div class="section-row">
+              <p class="kicker">화재 행동카드</p>
+              <button id="speakEmergency" type="button" class="mini-voice">🔊 전체 듣기</button>
+            </div>
             <ol id="actionCards"></ol>
           </div>
           <div class="result-card">
@@ -160,14 +273,14 @@
         <h2>내 정보</h2>
         <div class="info-card list">
           <div><span>언어</span><strong>한국어</strong></div>
-          <div><span>오프라인 저장</span><strong>준비 중</strong></div>
+          <div><span>오프라인 저장</span><strong>준비됨</strong></div>
           <div><span>개인 대화</span><strong>관리자 비공개</strong></div>
         </div>
       </section>
     </main>
 
     <nav class="bottom-nav" aria-label="주요 메뉴">
-      <button class="nav-item active" data-target="help"><span>도움받기</span></button>
+      <button class="nav-item active" data-target="help"><span>대화</span></button>
       <button class="nav-item" data-target="info"><span>정보</span></button>
       <button class="nav-item" data-target="safety"><span>안전</span></button>
       <button class="nav-item" data-target="profile"><span>내 정보</span></button>
