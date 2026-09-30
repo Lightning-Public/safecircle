@@ -52,6 +52,7 @@ const messageInput = document.querySelector("#message");
 const feedbackStatus = document.querySelector("#feedbackStatus");
 const actionStatus = document.querySelector("#actionStatus");
 const analysisMeta = document.querySelector("#analysisMeta");
+const aiProviderStatus = document.querySelector("#aiProviderStatus");
 const submitButton = form.querySelector('button[type="submit"]');
 let mode = "before_send";
 let currentCase = null;
@@ -72,6 +73,39 @@ function updateNetworkState() {
 window.addEventListener("online", updateNetworkState);
 window.addEventListener("offline", updateNetworkState);
 updateNetworkState();
+
+async function updateAiProviderStatus() {
+  if (!aiProviderStatus) return;
+
+  if (!navigator.onLine) {
+    aiProviderStatus.textContent = "오프라인 · 기본 중재 모드";
+    aiProviderStatus.dataset.state = "degraded";
+    return;
+  }
+
+  aiProviderStatus.textContent = "AI 연결 확인 중…";
+  aiProviderStatus.dataset.state = "checking";
+
+  try {
+    const response = await fetch("./api/health", { cache: "no-store" });
+    const data = await response.json();
+
+    if (response.ok && data.configured === true) {
+      aiProviderStatus.textContent = `Upstage AI 연결됨 · ${data.model || "Solar"}`;
+      aiProviderStatus.dataset.state = "ready";
+    } else {
+      aiProviderStatus.textContent = "AI 키 미연결 · 기본 중재 모드";
+      aiProviderStatus.dataset.state = "degraded";
+    }
+  } catch {
+    aiProviderStatus.textContent = "AI 연결 확인 실패 · 기본 중재 모드";
+    aiProviderStatus.dataset.state = "degraded";
+  }
+}
+
+window.addEventListener("online", updateAiProviderStatus);
+window.addEventListener("offline", updateAiProviderStatus);
+updateAiProviderStatus();
 
 const modeCopy = {
   before_send: ["말로 전하기", "어떤 말을 전하고 싶나요?"],
