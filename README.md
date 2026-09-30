@@ -30,6 +30,7 @@
 - [SafeLoop 경쟁·대체재 조사](./competitive-landscape-safeloop-v0.1.md) — 기존 재난·산업안전 서비스와 중복 위험
 - [Product Thesis v0.2](./product-thesis-v0.2.md) — **탐색 문서**. v0.1 기준선을 대체하지 않고 반복사용 루프, Situational Context Graph, Trust Architecture, 검증가설을 보강
 - [Situational Context Graph & Participation UX v0.1](./situational-context-graph-v0.1.md) — 상황 기반 문화맥락 데이터 모델, 참여 피드백 UX, 신뢰도·승격·어뷰징 방지 규칙
+- [Prototype Interaction Spec v0.1](./prototype-interaction-spec-v0.1.md) — “이 말, 상대방에게 어떻게 들릴까?” 화면 흐름, API/fixture 계약, 최소 테스트 기준
 
 ## 일정
 - 2026-09-10: 후보 3개 비교 및 1개 선정
