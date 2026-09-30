@@ -54,7 +54,6 @@ const actionStatus = document.querySelector("#actionStatus");
 const analysisMeta = document.querySelector("#analysisMeta");
 const submitButton = form.querySelector('button[type="submit"]');
 let mode = "before_send";
-let cases = [];
 let currentCase = null;
 
 function setView(target) {
@@ -127,30 +126,10 @@ function fillList(id, items) {
   });
 }
 
-function findFixtureCase(message) {
-  if (!window.SafeCircleMediation) return null;
-  const normalized = window.SafeCircleMediation.normalizeMessage(message);
-  const fixture = cases.find(item =>
-    window.SafeCircleMediation.normalizeMessage(item.message) === normalized
-  );
-
-  if (!fixture) return null;
-
-  return {
-    ...fixture,
-    schema_version: "1.0",
-    engine: "fixture-v1",
-    transport: "fixture"
-  };
-}
-
 async function requestMediation(message) {
   if (!window.SafeCircleMediation) {
     throw new Error("mediation engine unavailable");
   }
-
-  const fixture = findFixtureCase(message);
-  if (fixture) return fixture;
 
   const payload = {
     message,
@@ -161,7 +140,7 @@ async function requestMediation(message) {
 
   if (navigator.onLine) {
     const controller = new AbortController();
-    const timeout = window.setTimeout(() => controller.abort(), 5500);
+    const timeout = window.setTimeout(() => controller.abort(), 12000);
 
     try {
       const response = await fetch("./api/mediate", {
@@ -217,12 +196,19 @@ function renderCase(item) {
   actionStatus.textContent = "";
 
   if (analysisMeta) {
-    const labels = {
-      fixture: "검증된 예시 데이터 기반",
-      api: "SafeCircle POC 분석 · 서버 처리",
-      local: "SafeCircle POC 분석 · 기기 내 fallback"
-    };
-    analysisMeta.textContent = labels[item.transport] || "SafeCircle POC 분석";
+    if (item.provider === "upstage" && item.engine === "llm-v1") {
+      analysisMeta.textContent = `AI 중재 · Upstage ${item.model || "Solar"}`;
+      analysisMeta.dataset.state = "ai";
+    } else if (item.transport === "api-fallback") {
+      analysisMeta.textContent = "AI 연결 실패 · 기본 중재 모드로 처리";
+      analysisMeta.dataset.state = "degraded";
+    } else if (item.transport === "local") {
+      analysisMeta.textContent = "오프라인 · 기본 중재 모드로 처리";
+      analysisMeta.dataset.state = "degraded";
+    } else {
+      analysisMeta.textContent = "SafeCircle 중재";
+      analysisMeta.dataset.state = "default";
+    }
   }
 }
 
@@ -445,11 +431,6 @@ document.querySelectorAll(".feedback").forEach(button => {
     feedbackStatus.textContent = "피드백이 저장되었습니다. 개인 평가에는 사용하지 않습니다.";
   });
 });
-
-fetch("./fixtures/mediation-cases.json")
-  .then(r => r.json())
-  .then(data => { cases = data.cases || []; })
-  .catch(() => { cases = []; });
 
 fetch("./fixtures/context-patterns.json")
   .then(r => r.json())
