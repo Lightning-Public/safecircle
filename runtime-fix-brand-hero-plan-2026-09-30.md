@@ -41,7 +41,7 @@ Purpose:
 
 - new JS / CSS / onboarding assets should appear without being trapped behind an old cache
 - emergency bundle remains cache-first for offline reliability
-- cache version bumped to `safecircle-shell-v11`
+- cache version bumped to `safecircle-shell-v12`
 
 Validation:
 
