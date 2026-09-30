@@ -1,4 +1,4 @@
-const CACHE_NAME = "safecircle-shell-v10";
+const CACHE_NAME = "safecircle-shell-v11";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -33,31 +33,46 @@ self.addEventListener("activate", event => {
   self.clients.claim();
 });
 
+async function fetchAndRefresh(request) {
+  const response = await fetch(request);
+  if (response && response.ok) {
+    const copy = response.clone();
+    const cache = await caches.open(CACHE_NAME);
+    await cache.put(request, copy);
+  }
+  return response;
+}
+
 self.addEventListener("fetch", event => {
   if (event.request.method !== "GET") return;
+
   const url = new URL(event.request.url);
+  const isSameOrigin = url.origin === self.location.origin;
   const isEmergency = url.pathname.endsWith("/fixtures/emergency-bundle.json");
 
   if (isEmergency) {
     event.respondWith(
       caches.match(event.request).then(cached =>
-        cached || fetch(event.request).then(response => {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
-          return response;
-        })
+        cached || fetchAndRefresh(event.request)
       )
     );
     return;
   }
 
-  event.respondWith(
-    caches.match(event.request).then(cached => {
-      if (cached) return cached;
-      return fetch(event.request);
-    }).catch(() => {
-      if (event.request.mode === "navigate") return caches.match("./index.html");
-      return Response.error();
-    })
-  );
+  if (event.request.mode === "navigate") {
+    event.respondWith(
+      fetchAndRefresh(event.request).catch(async () =>
+        (await caches.match(event.request)) || caches.match("./index.html")
+      )
+    );
+    return;
+  }
+
+  if (isSameOrigin) {
+    event.respondWith(
+      fetchAndRefresh(event.request).catch(async () =>
+        (await caches.match(event.request)) || Response.error()
+      )
+    );
+  }
 });
