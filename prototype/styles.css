@@ -33,3 +33,7 @@ button:disabled{cursor:wait;opacity:.62}
 .ai-processing-note strong{color:var(--ink);font-size:.8rem}
 .analysis-meta[data-state="ai"]{color:var(--brand-blue)}
 .analysis-meta[data-state="degraded"]{color:#9A6700}
+
+.ai-provider-status{font-weight:800;color:var(--muted)}
+.ai-provider-status[data-state="ready"]{color:var(--brand-green)}
+.ai-provider-status[data-state="degraded"]{color:#9A6700}
