@@ -110,3 +110,17 @@ window.addEventListener("online", () => {
 window.addEventListener("offline", loadEmergencyBundle);
 
 updateQueueBadge().catch(() => {});
+
+document.querySelector("#speakEmergency")?.addEventListener("click", () => {
+  const texts = [...document.querySelectorAll("#actionCards strong")].map(el => el.textContent).filter(Boolean);
+  if (!texts.length) return;
+  if (!("speechSynthesis" in window)) {
+    document.querySelector("#bundleStatus").textContent = "이 브라우저에서는 음성 읽기를 지원하지 않습니다.";
+    return;
+  }
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(texts.join(" "));
+  utterance.lang = "ko-KR";
+  utterance.rate = 0.9;
+  window.speechSynthesis.speak(utterance);
+});
