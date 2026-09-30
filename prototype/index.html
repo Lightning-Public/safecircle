@@ -174,7 +174,12 @@
             <button type="button" class="chip sample" data-sample="기계 멈추면 바로 만지지 말고 관리자 부르세요.">안전수칙</button>
           </div>
 
-          <button class="primary full" type="submit">서로 다르게 들릴 수 있는지 확인</button>
+          <button class="primary full" type="submit">AI로 이해 차이 확인</button>
+          <div class="ai-processing-note" role="note">
+            <strong>AI 중재 사용</strong>
+            <span id="aiProviderStatus" class="ai-provider-status" aria-live="polite">AI 연결 확인 중…</span>
+            <span>입력한 문장은 이해 차이 분석을 위해 Upstage API로 전송됩니다. SafeCircle은 대화 원문을 조직 인사이트에 저장하지 않습니다.</span>
+          </div>
         </form>
 
         <section id="mediationResult" class="hidden" aria-live="polite">
@@ -183,6 +188,7 @@
           <div class="result-heading">
             <p class="kicker">Meaning Mirror</p>
             <h2>같은 말도 다르게 들릴 수 있어요.</h2>
+            <p id="analysisMeta" class="analysis-meta"></p>
           </div>
 
           <div class="mirror">
@@ -360,6 +366,7 @@
       <button class="nav-item" data-target="profile"><span>내 정보</span></button>
     </nav>
   </div>
+  <script src="./mediation-engine.js" defer></script>
   <script src="./app.js" defer></script>
   <script src="./emergency.js" defer></script>
 </body>

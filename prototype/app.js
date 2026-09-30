@@ -51,8 +51,10 @@ const passPhonePanel = document.querySelector("#passPhonePanel");
 const messageInput = document.querySelector("#message");
 const feedbackStatus = document.querySelector("#feedbackStatus");
 const actionStatus = document.querySelector("#actionStatus");
+const analysisMeta = document.querySelector("#analysisMeta");
+const aiProviderStatus = document.querySelector("#aiProviderStatus");
+const submitButton = form.querySelector('button[type="submit"]');
 let mode = "before_send";
-let cases = [];
 let currentCase = null;
 
 function setView(target) {
@@ -71,6 +73,39 @@ function updateNetworkState() {
 window.addEventListener("online", updateNetworkState);
 window.addEventListener("offline", updateNetworkState);
 updateNetworkState();
+
+async function updateAiProviderStatus() {
+  if (!aiProviderStatus) return;
+
+  if (!navigator.onLine) {
+    aiProviderStatus.textContent = "오프라인 · 기본 중재 모드";
+    aiProviderStatus.dataset.state = "degraded";
+    return;
+  }
+
+  aiProviderStatus.textContent = "AI 연결 확인 중…";
+  aiProviderStatus.dataset.state = "checking";
+
+  try {
+    const response = await fetch("./api/health", { cache: "no-store" });
+    const data = await response.json();
+
+    if (response.ok && data.configured === true) {
+      aiProviderStatus.textContent = `Upstage AI 연결됨 · ${data.model || "Solar"}`;
+      aiProviderStatus.dataset.state = "ready";
+    } else {
+      aiProviderStatus.textContent = "AI 키 미연결 · 기본 중재 모드";
+      aiProviderStatus.dataset.state = "degraded";
+    }
+  } catch {
+    aiProviderStatus.textContent = "AI 연결 확인 실패 · 기본 중재 모드";
+    aiProviderStatus.dataset.state = "degraded";
+  }
+}
+
+window.addEventListener("online", updateAiProviderStatus);
+window.addEventListener("offline", updateAiProviderStatus);
+updateAiProviderStatus();
 
 const modeCopy = {
   before_send: ["말로 전하기", "어떤 말을 전하고 싶나요?"],
@@ -125,15 +160,46 @@ function fillList(id, items) {
   });
 }
 
-function fallbackCase(message) {
-  return {
+async function requestMediation(message) {
+  if (!window.SafeCircleMediation) {
+    throw new Error("mediation engine unavailable");
+  }
+
+  const payload = {
     message,
-    literal: "입력한 문장의 문자 의미를 확인하는 테스트 상태입니다.",
-    risks: ["현재 fixture에 없는 문장입니다. 실제 AI 연결 전에는 문화적 해석을 단정하지 않습니다."],
-    facts: [],
-    questions: ["상대에게 전달하려는 의도나 상황을 조금 더 설명할 수 있나요?"],
-    rephrase: message,
-    escalation: "none"
+    mode,
+    relationship: document.querySelector("#relationship").value,
+    domain: document.querySelector("#domain").value
+  };
+
+  if (navigator.onLine) {
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 12000);
+
+    try {
+      const response = await fetch("./api/mediate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        signal: controller.signal
+      });
+
+      const data = await response.json();
+      if (!response.ok || !window.SafeCircleMediation.validateResult(data)) {
+        throw new Error(data?.message || "invalid mediation response");
+      }
+
+      return data;
+    } catch (error) {
+      console.warn("Mediation API fallback activated", error);
+    } finally {
+      window.clearTimeout(timeout);
+    }
+  }
+
+  return {
+    ...window.SafeCircleMediation.analyzeMessage(payload),
+    transport: "local"
   };
 }
 
@@ -162,13 +228,43 @@ function renderCase(item) {
   result.classList.remove("hidden");
   feedbackStatus.textContent = "";
   actionStatus.textContent = "";
+
+  if (analysisMeta) {
+    if (item.provider === "upstage" && item.engine === "llm-v1") {
+      analysisMeta.textContent = `AI 중재 · Upstage ${item.model || "Solar"}`;
+      analysisMeta.dataset.state = "ai";
+    } else if (item.transport === "api-fallback") {
+      analysisMeta.textContent = "AI 연결 실패 · 기본 중재 모드로 처리";
+      analysisMeta.dataset.state = "degraded";
+    } else if (item.transport === "local") {
+      analysisMeta.textContent = "오프라인 · 기본 중재 모드로 처리";
+      analysisMeta.dataset.state = "degraded";
+    } else {
+      analysisMeta.textContent = "SafeCircle 중재";
+      analysisMeta.dataset.state = "default";
+    }
+  }
 }
 
-form.addEventListener("submit", event => {
+form.addEventListener("submit", async event => {
   event.preventDefault();
   const message = messageInput.value.trim();
-  const item = cases.find(c => c.message === message) || fallbackCase(message);
-  renderCase(item);
+  if (!message) return;
+
+  const previousLabel = submitButton.textContent;
+  submitButton.disabled = true;
+  submitButton.textContent = "이해 차이 확인 중…";
+
+  try {
+    const item = await requestMediation(message);
+    renderCase(item);
+  } catch (error) {
+    console.error("Mediation failed", error);
+    voiceSupportNote.textContent = "분석을 완료하지 못했습니다. 입력 내용을 확인한 뒤 다시 시도해주세요.";
+  } finally {
+    submitButton.disabled = false;
+    submitButton.textContent = previousLabel;
+  }
 });
 
 function speakText(text, lang = "ko-KR") {
@@ -369,11 +465,6 @@ document.querySelectorAll(".feedback").forEach(button => {
     feedbackStatus.textContent = "피드백이 저장되었습니다. 개인 평가에는 사용하지 않습니다.";
   });
 });
-
-fetch("./fixtures/mediation-cases.json")
-  .then(r => r.json())
-  .then(data => { cases = data.cases || []; })
-  .catch(() => { cases = []; });
 
 fetch("./fixtures/context-patterns.json")
   .then(r => r.json())

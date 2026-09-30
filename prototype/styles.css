@@ -25,3 +25,15 @@ body.onboarding-open{overflow:hidden}.onboarding{position:fixed;inset:0;z-index:
   .onboarding-visual.actions-visual{min-height:39vh;gap:10px;padding:22px 18px}
   .onboarding-action{padding:12px 8px}
 }
+
+.analysis-meta{margin:6px 0 0;color:var(--muted);font-size:.78rem;font-weight:700}
+button:disabled{cursor:wait;opacity:.62}
+
+.ai-processing-note{display:grid;gap:4px;margin-top:12px;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:#F7FAFD;color:var(--muted);font-size:.78rem;line-height:1.45}
+.ai-processing-note strong{color:var(--ink);font-size:.8rem}
+.analysis-meta[data-state="ai"]{color:var(--brand-blue)}
+.analysis-meta[data-state="degraded"]{color:#9A6700}
+
+.ai-provider-status{font-weight:800;color:var(--muted)}
+.ai-provider-status[data-state="ready"]{color:var(--brand-green)}
+.ai-provider-status[data-state="degraded"]{color:#9A6700}

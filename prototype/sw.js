@@ -1,9 +1,10 @@
-const CACHE_NAME = "safecircle-shell-v12";
+const CACHE_NAME = "safecircle-shell-v15";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./styles.css",
   "./app.js",
+  "./mediation-engine.js",
   "./emergency.js",
   "./manifest.webmanifest",
   "./assets/logo-mark.svg",
