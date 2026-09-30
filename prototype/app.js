@@ -305,12 +305,35 @@ fetch("./fixtures/context-patterns.json")
     document.querySelector("#patternTitle").textContent = "집계 인사이트를 불러올 수 없습니다.";
   });
 
+async function updateOfflineReadiness() {
+  const el = document.querySelector("#offlineReadiness");
+  if (!el) return;
+  if (!("serviceWorker" in navigator) || !("caches" in window)) {
+    el.textContent = "지원 안 됨";
+    return;
+  }
+  el.textContent = "준비 중";
+  try {
+    await navigator.serviceWorker.ready;
+    const emergencyUrl = new URL("./fixtures/emergency-bundle.json", window.location.href).href;
+    const cached = await caches.match(emergencyUrl);
+    el.textContent = cached ? "비상정보 준비됨" : "비상정보 확인 필요";
+  } catch {
+    el.textContent = "비상정보 확인 필요";
+  }
+}
+
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", async () => {
     try {
       await navigator.serviceWorker.register("./sw.js");
+      await updateOfflineReadiness();
     } catch (error) {
       console.warn("Service worker registration failed", error);
+      const el = document.querySelector("#offlineReadiness");
+      if (el) el.textContent = "비상정보 확인 필요";
     }
   });
+} else {
+  window.addEventListener("load", updateOfflineReadiness);
 }
