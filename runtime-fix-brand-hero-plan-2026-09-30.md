@@ -55,12 +55,12 @@ The current `brand-hero-v1.webp` is a small raster composition containing text a
 
 Target structure:
 
-- create `prototype/assets/brand-hero-v2.webp` at a high-resolution landscape size suitable for Retina/mobile capture
-- hero image contains the people/community illustration only; no generated text
+- use the newly uploaded high-resolution source `prototype/assets/brand-keyvisual-v1.png`
+- render only the people/community focal area through a dedicated hero crop, rather than showing the full concept board
 - preserve the existing pastel blue/green/orange visual language
-- use the real `logo-mark.svg` and HTML text as overlays so the SafeCircle mark remains exact and sharp
-- crop around the central multicultural community scene rather than embedding the full concept board
-- use a new filename instead of replacing v1, avoiding stale asset cache collisions
+- keep the real `logo-mark.svg` and HTML brand text as an overlay so the SafeCircle mark and typography remain exact and sharp
+- do not rely on the previous low-resolution `brand-hero-v1.webp` for onboarding
+- keep the source PNG under a versioned filename so browser cache changes are explicit
 
 Acceptance target:
 
