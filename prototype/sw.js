@@ -1,4 +1,4 @@
-const CACHE_NAME = "safecircle-shell-v2";
+const CACHE_NAME = "safecircle-shell-v3";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -7,7 +7,8 @@ const APP_SHELL = [
   "./emergency.js",
   "./manifest.webmanifest",
   "./fixtures/mediation-cases.json",
-  "./fixtures/emergency-bundle.json"
+  "./fixtures/emergency-bundle.json",
+  "./fixtures/context-patterns.json"
 ];
 
 self.addEventListener("install", event => {
