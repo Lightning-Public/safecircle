@@ -4,8 +4,16 @@
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#ffffff",
+  "background_color": "#F4F8FC",
+  "theme_color": "#F4F8FC",
   "lang": "ko",
-  "description": "SafeCircle mobile-first multicultural mediation prototype"
+  "description": "SafeCircle mobile-first multicultural mediation prototype",
+  "icons": [
+    {
+      "src": "./assets/logo-mark.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
 }
