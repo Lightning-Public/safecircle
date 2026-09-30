@@ -1,0 +1,42 @@
+{
+  "facility_id": "factory_demo_01",
+  "facility_name": "SafeCircle Demo Factory",
+  "bundle_version": "2026-09-30T11:00:00+09:00",
+  "approved_at": "2026-09-30T10:50:00+09:00",
+  "expires_at": "2026-10-30T00:00:00+09:00",
+  "language": "ko",
+  "emergency_type": "fire",
+  "action_cards": [
+    {
+      "step": 1,
+      "text": "기계가 멈춰도 만지지 말고 즉시 대피하세요.",
+      "pictogram": "⚠️"
+    },
+    {
+      "step": 2,
+      "text": "지정된 비상구를 따라 밖으로 이동하세요.",
+      "pictogram": "🚪"
+    },
+    {
+      "step": 3,
+      "text": "집결지 A에서 안전 확인을 하세요.",
+      "pictogram": "📍"
+    }
+  ],
+  "assembly_point": {
+    "name": "집결지 A",
+    "description": "정문 맞은편 주차장"
+  },
+  "emergency_contacts": [
+    {
+      "label": "119",
+      "phone": "119"
+    },
+    {
+      "label": "현장 안전담당자",
+      "phone": "000-0000-0000",
+      "prototype": true
+    }
+  ],
+  "note": "프로토타입용 승인 비상정보 fixture"
+}

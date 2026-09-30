@@ -1,0 +1,11 @@
+{
+  "name": "SafeCircle Prototype",
+  "short_name": "SafeCircle",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "lang": "ko",
+  "description": "SafeCircle mobile-first multicultural mediation prototype"
+}

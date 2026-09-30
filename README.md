@@ -28,6 +28,12 @@
 - [프로토타입 개발계획](./prototype-plan-v0.1.md) — 핵심 사용자 흐름, MVP 범위, 안전·검증 기준
 - [사회현안 후보 비교](./candidate-shortlist-v0.1.md) — 초기 후보 조사 기록
 - [SafeLoop 경쟁·대체재 조사](./competitive-landscape-safeloop-v0.1.md) — 기존 재난·산업안전 서비스와 중복 위험
+- [Product Thesis v0.2](./product-thesis-v0.2.md) — **탐색 문서**. v0.1 기준선을 대체하지 않고 반복사용 루프, Situational Context Graph, Trust Architecture, 검증가설을 보강
+- [Situational Context Graph & Participation UX v0.1](./situational-context-graph-v0.1.md) — 상황 기반 문화맥락 데이터 모델, 참여 피드백 UX, 신뢰도·승격·어뷰징 방지 규칙
+- [Prototype Interaction Spec v0.1](./prototype-interaction-spec-v0.1.md) — “이 말, 상대방에게 어떻게 들릴까?” 화면 흐름, API/fixture 계약, 최소 테스트 기준
+- [Mobile PWA & Offline Emergency Spec v0.1](./mobile-pwa-offline-emergency-spec-v0.1.md) — 모바일 우선·플랫폼 독립 PWA, 비상정보 로컬 저장, 오프라인 회신·재동기화 계약
+- [Prototype Implementation Plan v0.1](./prototype-implementation-plan-v0.1.md) — Plan → Evaluate → Implement → Verify → Review 실행 게이트
+- [Prototype Progress](./prototype-progress.md) — Phase별 구현·검증·점수·다음 Gate 기록
 
 ## 일정
 - 2026-09-10: 후보 3개 비교 및 1개 선정
