@@ -16,7 +16,16 @@
 
       <article class="onboarding-slide active" data-onboarding-slide="0">
         <div class="onboarding-visual keyvisual">
-          <img src="./assets/brand-hero-v1.webp" alt="SafeCircle 브랜드 소개" loading="eager" decoding="sync">
+          <div class="brand-hero-stage">
+            <div class="brand-hero-art" role="img" aria-label="서로 다른 배경의 사람들이 함께 대화하는 SafeCircle 브랜드 이미지"></div>
+            <div class="brand-hero-lockup">
+              <img src="./assets/logo-mark.svg" alt="" aria-hidden="true" />
+              <div>
+                <strong>SafeCircle</strong>
+                <span>서로의 뜻이 만나는 곳</span>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="onboarding-copy">
           <span class="onboarding-step">1 / 3</span>
@@ -157,7 +166,7 @@
             <span aria-hidden="true">🎙️</span>
             <span id="voiceInputText">말로 입력하기</span>
           </button>
-          <small id="voiceSupportNote" class="support-note">브라우저가 음성입력을 지원하지 않으면 글로 입력할 수 있습니다.</small>
+          <small id="voiceSupportNote" class="support-note" aria-live="polite">브라우저가 음성입력을 지원하지 않으면 글로 입력할 수 있습니다.</small>
 
           <div class="sample-row">
             <button type="button" class="chip sample" data-sample="내일부터 30분 일찍 나오세요.">업무시간</button>

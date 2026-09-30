@@ -245,29 +245,113 @@ document.querySelector("#finishPassPhone").addEventListener("click", () => {
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const voiceButton = document.querySelector("#voiceInputButton");
-if (SpeechRecognition) {
+const voiceInputText = document.querySelector("#voiceInputText");
+const voiceSupportNote = document.querySelector("#voiceSupportNote");
+
+if (SpeechRecognition && voiceButton) {
   const recognition = new SpeechRecognition();
   recognition.lang = "ko-KR";
-  recognition.interimResults = false;
+  recognition.continuous = false;
+  recognition.interimResults = true;
   recognition.maxAlternatives = 1;
+
+  let voiceActive = false;
+  let voiceBaseText = "";
+  let voiceTranscript = "";
+  let voiceFailureText = "";
+
+  function setVoiceActive(active) {
+    voiceActive = active;
+    voiceButton.setAttribute("aria-pressed", active ? "true" : "false");
+    voiceInputText.textContent = active ? "듣기 중지" : "말로 입력하기";
+  }
+
+  function applyVoiceTranscript(transcript) {
+    const normalized = transcript.replace(/\s+/g, " ").trim();
+    if (!normalized) return;
+    voiceTranscript = normalized;
+    messageInput.value = [voiceBaseText, normalized].filter(Boolean).join(" ");
+    messageInput.dispatchEvent(new Event("input", { bubbles: true }));
+  }
+
   voiceButton.addEventListener("click", () => {
-    document.querySelector("#voiceInputText").textContent = "듣고 있어요…";
-    recognition.start();
+    if (voiceActive) {
+      recognition.stop();
+      return;
+    }
+
+    voiceBaseText = messageInput.value.trim();
+    voiceTranscript = "";
+    voiceFailureText = "";
+    voiceSupportNote.textContent = "마이크 권한을 허용한 뒤 자연스럽게 말해주세요.";
+
+    try {
+      recognition.start();
+    } catch (error) {
+      setVoiceActive(false);
+      voiceSupportNote.textContent = "음성입력을 시작하지 못했습니다. 잠시 후 다시 시도하거나 글로 입력해주세요.";
+      console.warn("Speech recognition start failed", error);
+    }
   });
+
+  recognition.addEventListener("start", () => {
+    setVoiceActive(true);
+    voiceSupportNote.textContent = "듣고 있어요. 말한 내용은 아래 입력란에 바로 표시됩니다.";
+  });
+
   recognition.addEventListener("result", event => {
-    messageInput.value = event.results[0][0].transcript;
+    const finalParts = [];
+    const interimParts = [];
+
+    for (let i = 0; i < event.results.length; i += 1) {
+      const result = event.results[i];
+      const transcript = result?.[0]?.transcript?.trim();
+      if (!transcript) continue;
+      (result.isFinal ? finalParts : interimParts).push(transcript);
+    }
+
+    const combined = [...finalParts, ...interimParts].join(" ");
+    applyVoiceTranscript(combined);
+
+    if (finalParts.length) {
+      voiceSupportNote.textContent = "음성 내용이 글 입력란에 반영되었습니다. 필요하면 문장을 수정한 뒤 확인하세요.";
+    }
   });
+
+  recognition.addEventListener("nomatch", () => {
+    voiceSupportNote.textContent = "말을 정확히 인식하지 못했습니다. 다시 시도하거나 글로 입력해주세요.";
+  });
+
+  recognition.addEventListener("error", event => {
+    if (event.error === "aborted") return;
+
+    const errorMessages = {
+      "not-allowed": "마이크 권한이 허용되지 않았습니다. 브라우저 설정에서 마이크를 허용하거나 글로 입력해주세요.",
+      "service-not-allowed": "이 브라우저에서는 음성인식 서비스를 사용할 수 없습니다. 글로 입력해주세요.",
+      "audio-capture": "마이크를 사용할 수 없습니다. 기기의 마이크 상태를 확인하거나 글로 입력해주세요.",
+      "no-speech": "음성이 감지되지 않았습니다. 다시 시도하거나 글로 입력해주세요.",
+      "network": "음성인식 연결에 문제가 있습니다. 네트워크를 확인하거나 글로 입력해주세요."
+    };
+
+    voiceFailureText = errorMessages[event.error] || "음성입력을 사용할 수 없습니다. 글 입력으로 계속할 수 있습니다.";
+    voiceSupportNote.textContent = voiceFailureText;
+  });
+
   recognition.addEventListener("end", () => {
-    document.querySelector("#voiceInputText").textContent = "말로 입력하기";
+    setVoiceActive(false);
+
+    if (voiceFailureText) return;
+    if (voiceTranscript) {
+      voiceSupportNote.textContent = "음성 내용이 글 입력란에 반영되었습니다. 필요하면 문장을 수정한 뒤 확인하세요.";
+    } else {
+      voiceSupportNote.textContent = "인식된 내용이 없습니다. 다시 말하거나 글로 입력해주세요.";
+    }
   });
-  recognition.addEventListener("error", () => {
-    document.querySelector("#voiceInputText").textContent = "말로 입력하기";
-    document.querySelector("#voiceSupportNote").textContent = "음성입력을 사용할 수 없어 글 입력으로 계속할 수 있습니다.";
-  });
-} else {
+} else if (voiceButton) {
   voiceButton.disabled = true;
   voiceButton.setAttribute("aria-disabled", "true");
-  document.querySelector("#voiceInputText").textContent = "음성입력 미지원 · 글로 입력";
+  voiceInputText.textContent = "음성입력 미지원 · 글로 입력";
+  voiceSupportNote.textContent = "이 브라우저는 음성입력을 지원하지 않습니다. 아래 글 입력란을 이용해주세요.";
 }
 
 document.querySelectorAll(".feedback").forEach(button => {
