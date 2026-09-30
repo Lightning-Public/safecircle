@@ -1,0 +1,27 @@
+{
+  "patterns": [
+    {
+      "pattern_id": "pat_public_correction_001",
+      "domain": "workplace_instruction",
+      "relationship": "manager-worker",
+      "trigger": {
+        "setting": "public",
+        "expression_pattern": "direct_correction"
+      },
+      "observations": {
+        "count": 8,
+        "reaction_distribution": {
+          "natural": 1,
+          "formal": 1,
+          "confusing": 1,
+          "rude": 3,
+          "burdensome": 2
+        }
+      },
+      "interpretation": "공개된 자리에서 직접적인 지적이 부담 또는 비난으로 받아들여졌다는 피드백이 반복 보고됨",
+      "status": "emerging",
+      "allowed_use": "context_hint_only",
+      "privacy": "aggregate_only"
+    }
+  ]
+}
