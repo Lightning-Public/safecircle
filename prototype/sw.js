@@ -1,4 +1,4 @@
-const CACHE_NAME = "safecircle-shell-v4";
+const CACHE_NAME = "safecircle-shell-v5";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -6,6 +6,12 @@ const APP_SHELL = [
   "./app.js",
   "./emergency.js",
   "./manifest.webmanifest",
+  "./assets/logo-mark.svg",
+  "./assets/icon-speak.svg",
+  "./assets/icon-listen.svg",
+  "./assets/icon-together.svg",
+  "./assets/icon-safety.svg",
+  "./assets/icon-info.svg",
   "./fixtures/mediation-cases.json",
   "./fixtures/emergency-bundle.json",
   "./fixtures/context-patterns.json"
