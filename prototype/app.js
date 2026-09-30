@@ -1,3 +1,45 @@
+const ONBOARDING_KEY = "safecircle:onboarding-v1";
+const onboarding = document.querySelector("#onboarding");
+const onboardingSlides = [...document.querySelectorAll(".onboarding-slide")];
+const onboardingDots = [...document.querySelectorAll(".onboarding-dots span")];
+const nextOnboarding = document.querySelector("#nextOnboarding");
+let onboardingIndex = 0;
+
+function renderOnboarding(index) {
+  onboardingIndex = Math.max(0, Math.min(index, onboardingSlides.length - 1));
+  onboardingSlides.forEach((slide, i) => slide.classList.toggle("active", i === onboardingIndex));
+  onboardingDots.forEach((dot, i) => dot.classList.toggle("active", i === onboardingIndex));
+  nextOnboarding.textContent = onboardingIndex === onboardingSlides.length - 1 ? "SafeCircle 시작하기" : "다음";
+}
+
+function openOnboarding() {
+  renderOnboarding(0);
+  onboarding.classList.remove("hidden");
+  document.body.classList.add("onboarding-open");
+}
+
+function closeOnboarding() {
+  localStorage.setItem(ONBOARDING_KEY, "seen");
+  onboarding.classList.add("hidden");
+  document.body.classList.remove("onboarding-open");
+}
+
+nextOnboarding?.addEventListener("click", () => {
+  if (onboardingIndex >= onboardingSlides.length - 1) {
+    closeOnboarding();
+    return;
+  }
+  renderOnboarding(onboardingIndex + 1);
+});
+
+document.querySelector("#skipOnboarding")?.addEventListener("click", closeOnboarding);
+document.querySelector("#replayOnboarding")?.addEventListener("click", openOnboarding);
+
+if (localStorage.getItem(ONBOARDING_KEY) !== "seen") {
+  openOnboarding();
+}
+
+
 const views = [...document.querySelectorAll(".view")];
 const navItems = [...document.querySelectorAll(".nav-item")];
 const networkBadge = document.querySelector("#networkBadge");
