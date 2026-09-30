@@ -12,9 +12,12 @@
 <body>
   <div class="app-shell">
     <header class="topbar">
-      <div>
-        <p class="eyebrow">SafeCircle</p>
-        <h1>서로의 뜻이 만나는 곳</h1>
+      <div class="brand-lockup">
+        <img class="brand-mark" src="./assets/logo-mark.svg" alt="" aria-hidden="true" />
+        <div>
+          <p class="eyebrow">SafeCircle</p>
+          <h1>서로의 뜻이 만나는 곳</h1>
+        </div>
       </div>
       <span id="networkBadge" class="status-badge" aria-live="polite">확인 중</span>
     </header>
@@ -30,7 +33,7 @@
 
           <div class="action-grid">
             <button class="journey-card mode-button" data-mode="before_send">
-              <span class="journey-icon" aria-hidden="true">🎙️</span>
+              <img class="journey-icon" src="./assets/icon-speak.svg" alt="" aria-hidden="true" />
               <span>
                 <strong>말로 전하기</strong>
                 <small>내 뜻이 잘 전달되도록 도와드려요</small>
@@ -38,7 +41,7 @@
               <span aria-hidden="true">›</span>
             </button>
             <button class="journey-card mode-button" data-mode="understand_received">
-              <span class="journey-icon" aria-hidden="true">👂</span>
+              <img class="journey-icon" src="./assets/icon-listen.svg" alt="" aria-hidden="true" />
               <span>
                 <strong>들은 말 이해하기</strong>
                 <small>무슨 뜻인지 헷갈릴 때 확인해요</small>
@@ -46,7 +49,7 @@
               <span aria-hidden="true">›</span>
             </button>
             <button class="journey-card mode-button featured" data-mode="together">
-              <span class="journey-icon" aria-hidden="true">🤝</span>
+              <img class="journey-icon" src="./assets/icon-together.svg" alt="" aria-hidden="true" />
               <span>
                 <strong>같이 이야기하기</strong>
                 <small>한 휴대폰으로 서로 직접 확인해요</small>
@@ -56,7 +59,7 @@
           </div>
 
           <button class="safety-shortcut nav-shortcut" data-target="safety">
-            <span aria-hidden="true">🛟</span>
+            <img class="shortcut-icon" src="./assets/icon-safety.svg" alt="" aria-hidden="true" />
             <span>
               <strong>안전 정보</strong>
               <small>인터넷이 없어도 승인된 비상정보를 확인할 수 있어요</small>
@@ -212,7 +215,10 @@
       </section>
 
       <section class="view" data-view="info">
-        <h2>검증된 정보</h2>
+        <div class="section-title">
+          <img class="section-icon" src="./assets/icon-info.svg" alt="" aria-hidden="true" />
+          <div><p class="kicker">공공정보 연결</p><h2>검증된 정보</h2></div>
+        </div>
         <div class="info-card">
           <p>생활·노동·안전 정보카드가 이 영역에 표시됩니다.</p>
           <small>출처와 검토일을 함께 표시합니다.</small>
