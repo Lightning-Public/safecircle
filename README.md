@@ -28,6 +28,7 @@
 - [프로토타입 개발계획](./prototype-plan-v0.1.md) — 핵심 사용자 흐름, MVP 범위, 안전·검증 기준
 - [사회현안 후보 비교](./candidate-shortlist-v0.1.md) — 초기 후보 조사 기록
 - [SafeLoop 경쟁·대체재 조사](./competitive-landscape-safeloop-v0.1.md) — 기존 재난·산업안전 서비스와 중복 위험
+- [Product Thesis v0.2](./product-thesis-v0.2.md) — **탐색 문서**. v0.1 기준선을 대체하지 않고 반복사용 루프, Situational Context Graph, Trust Architecture, 검증가설을 보강
 
 ## 일정
 - 2026-09-10: 후보 3개 비교 및 1개 선정
