@@ -97,8 +97,12 @@ document.querySelectorAll(".feedback").forEach(button => {
   button.addEventListener("click", () => {
     const eventData = {
       mediation_mode: mode,
+      relationship: document.querySelector("#relationship").value,
+      domain: document.querySelector("#domain").value,
       intent_match: button.dataset.value,
-      created_at: new Date().toISOString()
+      message_fingerprint: String(messageInput.value.trim().length),
+      created_at: new Date().toISOString(),
+      consent_for_aggregate_learning: true
     };
     sessionStorage.setItem("safecircle:last-feedback", JSON.stringify(eventData));
     feedbackStatus.textContent = "피드백이 저장되었습니다. 개인 평가에는 사용하지 않습니다.";
@@ -125,3 +129,17 @@ if ("serviceWorker" in navigator) {
     }
   });
 }
+
+fetch("./fixtures/context-patterns.json")
+  .then(r => r.json())
+  .then(data => {
+    const pattern = (data.patterns || [])[0];
+    if (!pattern) return;
+    document.querySelector("#patternTitle").textContent = "반복되는 커뮤니케이션 마찰";
+    document.querySelector("#patternText").textContent = pattern.interpretation;
+    document.querySelector("#patternMeta").textContent =
+      `개인 원문 없이 집계 · ${pattern.observations.count}건 · 상태 ${pattern.status}`;
+  })
+  .catch(() => {
+    document.querySelector("#patternTitle").textContent = "집계 인사이트를 불러올 수 없습니다.";
+  });
