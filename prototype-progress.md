@@ -82,3 +82,43 @@
   3. 실제 번역/베트남어 표현은 아직 mock이며 전문가 검토 전
 - Decision: **CONDITIONAL PASS**
 - Next: Phase 3 Offline Emergency. 비상정보는 생성형 AI와 독립적으로 완전 오프라인 동작하도록 구현.
+
+
+## Phase 3 — Offline Emergency
+
+- Commits:
+  - ea67170 — emergency bundle fixture
+  - ce71182 — IndexedDB emergency queue
+  - 45de23c — emergency mobile UI
+  - 9156a23 — emergency UI styling
+  - d7a7c75 — service worker v2 / emergency cache-first
+- Implemented:
+  - 승인된 Emergency Bundle fixture
+  - 화재 행동카드 / 집결지 / 119 연결
+  - 대피 중 / 도움 필요 / 집결 완료 상태
+  - IndexedDB local queue
+  - offline pending 표시
+  - 온라인 복귀 시 prototype-local sync 처리
+  - Service Worker에서 emergency bundle 선캐시 및 cache-first
+  - mediation fixture도 shell cache에 포함
+- Verification:
+  - service worker cache 목록에 emergency bundle 존재
+  - emergency.js는 offline queue와 device timestamp를 저장
+  - 네트워크 상태에 따라 pending 메시지 구분
+  - 실제 서버 전송이 아닌 prototype-local sync임을 코드/UI에서 구분
+  - 실제 HTTPS/iOS/Android 런타임 테스트는 아직 수행하지 못함
+- Score:
+  - 목표충족 2
+  - 모바일 UX 2
+  - 신뢰경계 2
+  - 오프라인 1
+  - 단순성 2
+  - 다음단계준비 2
+  - **Total 11/12**
+- Issues:
+  1. 실제 HTTPS origin에서 install/cache/offline reload 검증 필요
+  2. 실제 서버 ACK 기반 sync는 미구현
+  3. bundle 만료 시각 경고 UI는 아직 최소 수준
+  4. 실제 사업장 연락처/안전카드는 승인 절차가 필요
+- Decision: **CONDITIONAL PASS**
+- Next: Phase 4 Context Feedback / 익명 조직 인사이트 mock.
