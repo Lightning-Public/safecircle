@@ -8,7 +8,7 @@ const APP_SHELL = [
   "./manifest.webmanifest",
   "./assets/logo-mark.svg",
   "./assets/brand-hero-v1.webp",
-  "./assets/brand-keyvisual-v1.webp",
+  "./assets/brand-keyvisual-v1.png",
   "./assets/icon-speak.svg",
   "./assets/icon-listen.svg",
   "./assets/icon-together.svg",
