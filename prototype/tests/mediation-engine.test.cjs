@@ -32,6 +32,7 @@ test("safety content requires official confirmation", () => {
 
   assert.equal(result.escalation, "official_support");
   assert.ok(result.facts.some(item => item.includes("안전수칙")));
+  assert.ok(result.rephrase.includes("임의로 판단하지 않겠습니다"));
 });
 
 test("blaming language is surfaced as an interpretation risk", () => {
@@ -47,4 +48,14 @@ test("empty input is rejected", () => {
     () => engine.analyzeMessage({ message: "   " }),
     error => error && error.code === "MESSAGE_REQUIRED"
   );
+});
+
+test("ordinary questions are described without assuming blame", () => {
+  const result = engine.analyzeMessage({
+    message: "점심 같이 먹을래요?",
+    relationship: "peer-peer"
+  });
+
+  assert.ok(result.literal.includes("의사, 이유 또는 가능 여부"));
+  assert.ok(!result.rephrase.includes("진행 상황"));
 });
