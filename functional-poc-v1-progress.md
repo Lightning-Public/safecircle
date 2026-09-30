@@ -63,11 +63,19 @@ PASS:
 
 ## Important limitation
 
-현재 Functional POC의 mediation 품질은 **rule-v1 deterministic engine** 기준이다.
-즉, 화면만 작동하는 목업은 벗어났지만 아직 외부 LLM 기반의 의미 추론 품질은 연결하지 않았다.
+AI mediation은 POC 필수 기능으로 확정했다.
 
-다음 품질 단계에서는 현재 `/api/mediate` 계약을 유지한 채 provider adapter를 추가해 AI mediation을 연결하고,
-`rule-v1`은 offline/error fallback과 회귀 테스트 기준선으로 유지한다.
+현재 브랜치에는 Upstage Solar provider adapter가 연결되어 있으며 온라인 기본 경로는:
+`사용자 입력 → /api/mediate → Upstage Solar → Structured Output → Meaning Mirror` 이다.
+
+- 기본 모델: `solar-pro4` (환경변수 `UPSTAGE_MODEL`로 변경 가능)
+- 비밀키: Vercel `UPSTAGE_API_KEY`
+- structured output: strict JSON Schema
+- provider 실패/timeout: `rule-v1` fallback
+- offline: `rule-v1` local fallback
+- 앱에서 `/api/health`를 통해 AI 연결 여부만 표시하며 키 값은 노출하지 않는다.
+
+따라서 `rule-v1` 단독 동작은 Functional POC PASS가 아니며, Preview에서 실제 Upstage 응답을 확인해야 한다.
 
 ## Preview runtime gate
 
