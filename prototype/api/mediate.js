@@ -2,8 +2,11 @@ const {
   analyzeMessage,
   validateResult
 } = require("../mediation-engine.js");
+const {
+  mediateWithUpstage
+} = require("../providers/upstage.js");
 
-module.exports = function handler(request, response) {
+module.exports = async function handler(request, response) {
   response.setHeader("Cache-Control", "no-store");
 
   if (request.method !== "POST") {
@@ -14,39 +17,58 @@ module.exports = function handler(request, response) {
     });
   }
 
+  let body;
   try {
-    const body = typeof request.body === "string"
+    body = typeof request.body === "string"
       ? JSON.parse(request.body || "{}")
       : (request.body || {});
+  } catch {
+    return response.status(400).json({
+      error: "invalid_json",
+      message: "요청 형식을 확인해주세요."
+    });
+  }
 
-    const result = analyzeMessage({
+  let input;
+  try {
+    const localValidation = analyzeMessage({
       message: body.message,
       mode: body.mode,
       relationship: body.relationship,
       domain: body.domain
     });
 
-    if (!validateResult(result)) {
-      return response.status(500).json({
-        error: "invalid_mediation_result",
-        message: "분석 결과 형식이 올바르지 않습니다."
+    input = {
+      message: localValidation.message,
+      mode: body.mode || "before_send",
+      relationship: body.relationship || "peer-peer",
+      domain: body.domain || "workplace_instruction"
+    };
+  } catch (error) {
+    return response.status(400).json({
+      error: error && error.code ? error.code.toLowerCase() : "invalid_input",
+      message: "입력 문장을 확인해주세요."
+    });
+  }
+
+  try {
+    const aiResult = await mediateWithUpstage(input);
+
+    if (!validateResult(aiResult)) {
+      throw Object.assign(new Error("invalid AI mediation result"), {
+        code: "INVALID_AI_RESULT"
       });
     }
 
-    return response.status(200).json({
-      ...result,
-      transport: "api"
-    });
+    return response.status(200).json(aiResult);
   } catch (error) {
-    const status = error && (error.code === "MESSAGE_REQUIRED" || error.code === "MESSAGE_TOO_LONG")
-      ? 400
-      : 500;
+    const fallback = analyzeMessage(input);
 
-    return response.status(status).json({
-      error: error && error.code ? error.code.toLowerCase() : "mediation_failed",
-      message: status === 400
-        ? "입력 문장을 확인해주세요."
-        : "분석 중 문제가 발생했습니다."
+    return response.status(200).json({
+      ...fallback,
+      transport: "api-fallback",
+      degraded: true,
+      fallback_reason: error && error.code ? error.code : "UPSTAGE_UNKNOWN_ERROR"
     });
   }
 };
