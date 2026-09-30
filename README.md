@@ -31,6 +31,7 @@
 - [Product Thesis v0.2](./product-thesis-v0.2.md) — **탐색 문서**. v0.1 기준선을 대체하지 않고 반복사용 루프, Situational Context Graph, Trust Architecture, 검증가설을 보강
 - [Situational Context Graph & Participation UX v0.1](./situational-context-graph-v0.1.md) — 상황 기반 문화맥락 데이터 모델, 참여 피드백 UX, 신뢰도·승격·어뷰징 방지 규칙
 - [Prototype Interaction Spec v0.1](./prototype-interaction-spec-v0.1.md) — “이 말, 상대방에게 어떻게 들릴까?” 화면 흐름, API/fixture 계약, 최소 테스트 기준
+- [Mobile PWA & Offline Emergency Spec v0.1](./mobile-pwa-offline-emergency-spec-v0.1.md) — 모바일 우선·플랫폼 독립 PWA, 비상정보 로컬 저장, 오프라인 회신·재동기화 계약
 
 ## 일정
 - 2026-09-10: 후보 3개 비교 및 1개 선정
