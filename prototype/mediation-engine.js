@@ -60,13 +60,13 @@
 
   function buildLiteral(message, mode, signals) {
     if (mode === "understand_received") {
-      if (signals.question) return "상대가 이유나 현재 상태를 확인하려는 말로 들립니다.";
+      if (signals.question) return "상대가 의사, 이유 또는 가능 여부를 확인하려는 질문으로 들립니다.";
       if (signals.prohibition) return "상대가 어떤 행동을 제한하거나 하지 말아 달라는 뜻을 전달하고 있습니다.";
       if (signals.request) return "상대가 특정 행동이나 작업을 요청하는 뜻을 전달하고 있습니다.";
       return "상대가 자신의 요청이나 상황을 전달하는 문장입니다.";
     }
 
-    if (signals.question) return "상대에게 이유나 현재 상태를 확인하려는 뜻을 담은 문장입니다.";
+    if (signals.question) return "상대의 의사, 이유 또는 가능 여부를 확인하려는 질문입니다.";
     if (signals.prohibition) return "상대에게 어떤 행동을 제한하거나 하지 말아 달라는 뜻을 전달하는 문장입니다.";
     if (signals.request) return "상대에게 특정 행동이나 작업을 요청하는 뜻을 전달하는 문장입니다.";
     return "상대에게 자신의 요청이나 상황을 전달하는 문장입니다.";
@@ -144,8 +144,11 @@
   }
 
   function buildRephrase(message, signals) {
+    if (signals.safety && signals.question) {
+      return `안전과 관련된 내용이라 임의로 판단하지 않겠습니다. “${message}”는 현장 승인 안전수칙이나 관리자에게 먼저 확인해주세요.`;
+    }
     if (signals.safety) {
-      return `안전을 위해 “${message}”를 먼저 지켜주세요. 현장 승인 절차와 다른 점이 있으면 즉시 관리자에게 확인해주세요.`;
+      return `안전을 위해 “${message}”를 우선 지켜주세요. 현장 승인 절차와 다른 점이 있으면 즉시 관리자에게 확인해주세요.`;
     }
     if (signals.blame) {
       return "현재 진행 상황을 확인하고 싶습니다. 어려운 점이나 필요한 도움이 있으면 알려주세요. 완료 가능한 시점도 함께 확인해볼까요?";
@@ -157,7 +160,7 @@
       return `요청드릴 내용이 있습니다. “${message}” 가능한지 확인해주세요. 어렵거나 확인할 부분이 있으면 함께 조정하겠습니다.`;
     }
     if (signals.question) {
-      return `“${message}”에 대해 상황을 이해하고 싶습니다. 제가 놓친 배경이나 설명이 있으면 알려주세요.`;
+      return `“${message}”라고 확인하고 싶습니다. 사실이나 의사를 편하게 알려주세요.`;
     }
     return `제가 전하려는 내용은 “${message}”입니다. 제가 의도한 뜻과 다르게 들린 부분이 있으면 말씀해주세요.`;
   }
