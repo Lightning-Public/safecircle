@@ -21,15 +21,80 @@
 
     <main id="appMain" class="main" tabindex="-1">
       <section class="view active" data-view="help">
-        <div class="hero-card">
+        <div class="hero-card" id="helpStart">
           <p class="kicker">상호이해</p>
           <h2>이 말, 상대방에게 어떻게 들릴까?</h2>
           <p>전달하기 전이나 받은 말을 이해하기 어려울 때 확인해보세요.</p>
           <div class="stack">
-            <button class="primary">전달 전 확인</button>
-            <button class="secondary">받은 말 이해</button>
+            <button class="primary mode-button" data-mode="before_send">전달 전 확인</button>
+            <button class="secondary mode-button" data-mode="understand_received">받은 말 이해</button>
           </div>
         </div>
+
+        <form id="mediationForm" class="info-card hidden">
+          <label>관계
+            <select id="relationship">
+              <option value="manager-worker">관리자 → 근로자</option>
+              <option value="worker-manager">근로자 → 관리자</option>
+              <option value="peer-peer">동료 ↔ 동료</option>
+            </select>
+          </label>
+          <label>상황
+            <select id="domain">
+              <option value="workplace_instruction">업무 지시</option>
+              <option value="leave_schedule">휴가·근무시간</option>
+              <option value="safety">안전수칙</option>
+            </select>
+          </label>
+          <label>문장
+            <textarea id="message" rows="4" required placeholder="확인할 문장을 입력하세요."></textarea>
+          </label>
+          <div class="sample-row">
+            <button type="button" class="chip sample" data-sample="내일부터 30분 일찍 나오세요.">예시 1</button>
+            <button type="button" class="chip sample" data-sample="왜 이것도 아직 안 했어요?">예시 2</button>
+            <button type="button" class="chip sample" data-sample="기계 멈추면 바로 만지지 말고 관리자 부르세요.">예시 3</button>
+          </div>
+          <button class="primary full" type="submit">어떻게 들릴지 확인</button>
+        </form>
+
+        <section id="mediationResult" class="hidden" aria-live="polite">
+          <div class="result-card">
+            <p class="kicker">문자 그대로의 의미</p>
+            <p id="literalMeaning"></p>
+          </div>
+          <div class="result-card">
+            <p class="kicker">다르게 받아들일 수 있는 부분</p>
+            <ul id="interpretationRisks"></ul>
+          </div>
+          <div class="result-card" id="factsCard">
+            <p class="kicker">확인해야 할 사실</p>
+            <ul id="factsToConfirm"></ul>
+          </div>
+          <div class="result-card">
+            <p class="kicker">확인 질문</p>
+            <ul id="questionsToConfirm"></ul>
+          </div>
+          <div class="result-card emphasis">
+            <p class="kicker">더 쉬운 표현</p>
+            <p id="suggestedRephrase"></p>
+          </div>
+          <div id="escalationNotice" class="info-card hidden"></div>
+          <div class="info-card">
+            <strong>이 결과는 판정이 아닙니다.</strong>
+            <p>문화적 해석은 가능성으로만 표시하며, 규정·노동·안전 문제는 공식정보나 사람의 확인이 필요할 수 있습니다.</p>
+          </div>
+          <div class="feedback-card">
+            <strong>설명이 실제 의도와 비슷했나요?</strong>
+            <div class="feedback-actions">
+              <button type="button" class="chip feedback" data-value="mostly">거의 맞아요</button>
+              <button type="button" class="chip feedback" data-value="partly">일부만 맞아요</button>
+              <button type="button" class="chip feedback" data-value="different">달라요</button>
+            </div>
+            <small id="feedbackStatus"></small>
+          </div>
+          <button id="resetMediation" class="secondary full" type="button">다른 문장 확인</button>
+        </section>
+
         <div class="info-card">
           <strong>AI는 판정하지 않습니다.</strong>
           <p>가능한 해석 차이와 확인할 질문을 정리하고, 필요한 경우 사람이나 공식정보로 연결합니다.</p>
@@ -50,10 +115,6 @@
           <h2>비상 정보 보기</h2>
           <p>승인된 안전정보는 인터넷 연결이 없어도 볼 수 있도록 준비합니다.</p>
           <button class="danger">비상모드 열기</button>
-        </div>
-        <div class="info-card">
-          <strong>현재 프로토타입 상태</strong>
-          <p>Phase 1에서는 모바일 PWA shell과 오프라인 앱 실행 기반만 제공합니다.</p>
         </div>
       </section>
 
