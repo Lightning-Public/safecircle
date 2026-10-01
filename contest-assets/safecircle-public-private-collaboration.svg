@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="t d">
+<title id="t">민관협력 구조</title>
+<desc id="d">시민·이주민, 사업장, 지원기관, 공공기관이 SafeCircle을 중심으로 연결되는 민관협력 구조도</desc>
+
+<style>
+  text{font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;fill:#173052}
+  .title{font-size:54px;font-weight:800}
+  .subtitle{font-size:25px;font-weight:600;fill:#66758A}
+  .label{font-size:28px;font-weight:800}
+  .body{font-size:22px;font-weight:500}
+  .small{font-size:19px;font-weight:600;fill:#66758A}
+  .card{fill:#FFFFFF;stroke:#DCE6F1;stroke-width:2}
+  .arrow{fill:none;stroke:#9DB2C7;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+</style>
+<rect width="1600" height="900" fill="#F7FAFD"/>
+<g transform="translate(74 58) scale(1.15)">
+<g id="safecircle-logo" transform="translate(0 0)">
+  <circle cx="32" cy="32" r="30" fill="#F4F9FF"/>
+  <circle cx="32" cy="12" r="7" fill="#2F80ED"/>
+  <path d="M18 23c5-6 12-8 18-5 5 2 9 7 10 13" fill="none" stroke="#2F80ED" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="50" cy="35" r="7" fill="#F2B134"/>
+  <path d="M44 49c-6 3-13 2-18-2-4-3-6-8-6-13" fill="none" stroke="#F2B134" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="14" cy="40" r="7" fill="#35C98A"/>
+  <path d="M20 48c-5-3-8-9-8-15 0-5 2-10 6-14" fill="none" stroke="#35C98A" stroke-width="7" stroke-linecap="round"/>
+</g></g>
+<text x="160" y="105" class="title">민관협력 구조</text>
+<text x="160" y="150" class="subtitle">SafeCircle은 기관을 대신하지 않고, 시민과 실제 지원체계 사이를 연결합니다.</text>
+
+<path d="M800 420L390 285M800 420L1210 285M800 420L390 645M800 420L1210 645" class="arrow"/>
+
+<rect x="575" y="280" width="450" height="280" rx="44" fill="#FFFFFF" stroke="#B9D3F4" stroke-width="3"/>
+<g transform="translate(744 320) scale(1.75)">
+<g id="safecircle-logo" transform="translate(0 0)">
+  <circle cx="32" cy="32" r="30" fill="#F4F9FF"/>
+  <circle cx="32" cy="12" r="7" fill="#2F80ED"/>
+  <path d="M18 23c5-6 12-8 18-5 5 2 9 7 10 13" fill="none" stroke="#2F80ED" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="50" cy="35" r="7" fill="#F2B134"/>
+  <path d="M44 49c-6 3-13 2-18-2-4-3-6-8-6-13" fill="none" stroke="#F2B134" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="14" cy="40" r="7" fill="#35C98A"/>
+  <path d="M20 48c-5-3-8-9-8-15 0-5 2-10 6-14" fill="none" stroke="#35C98A" stroke-width="7" stroke-linecap="round"/>
+</g></g>
+<text x="800" y="490" text-anchor="middle" style="font-size:46px;font-weight:850">SafeCircle</text>
+<text x="800" y="535" text-anchor="middle" class="body">정보를 이해 가능한 형태로 전달하고</text>
+<text x="800" y="570" text-anchor="middle" class="body">필요한 사람과 기관으로 연결</text>
+
+<rect x="130" y="205" width="430" height="205" rx="30" fill="#EEF5FF" stroke="#CFE0F6" stroke-width="2"/>
+<circle cx="220" cy="290" r="52" fill="#DCEBFF"/><circle cx="203" cy="274" r="12" fill="#2F80ED"/><circle cx="237" cy="274" r="12" fill="#35C98A"/><path d="M184 319c10-28 62-28 72 0" fill="none" stroke="#66758A" stroke-width="8" stroke-linecap="round"/>
+<text x="300" y="270" class="label">시민 · 이주민</text>
+<text x="300" y="313" class="body">상황 확인 · 의사소통</text>
+<text x="300" y="348" class="body">안전상태·도움 요청</text>
+
+<rect x="1040" y="205" width="430" height="205" rx="30" fill="#FFF7E8" stroke="#F0DFC2" stroke-width="2"/>
+<circle cx="1130" cy="290" r="52" fill="#FFF0CC"/><path d="M1098 317v-45l32-20 32 20v45M1112 317v-25h36v25M1107 280h9M1144 280h9" stroke="#F2B134" stroke-width="7" fill="none" stroke-linejoin="round"/>
+<text x="1210" y="270" class="label">사업장 · 생활현장</text>
+<text x="1210" y="313" class="body">현장 안전정보 제공</text>
+<text x="1210" y="348" class="body">안내·교육 방식 개선</text>
+
+<rect x="130" y="565" width="430" height="205" rx="30" fill="#EFFAF5" stroke="#CDEBDD" stroke-width="2"/>
+<circle cx="220" cy="650" r="52" fill="#DDF5E9"/><path d="M190 648c22-26 42-26 60 0M197 669c16 17 30 17 46 0" stroke="#35C98A" stroke-width="8" fill="none" stroke-linecap="round"/>
+<text x="300" y="630" class="label">지역 지원기관</text>
+<text x="300" y="673" class="body">통역 · 상담 · 생활지원</text>
+<text x="300" y="708" class="body">사람의 도움이 필요한 영역</text>
+
+<rect x="1040" y="565" width="430" height="205" rx="30" fill="#FFF1F2" stroke="#F3D4D7" stroke-width="2"/>
+<circle cx="1130" cy="650" r="52" fill="#FFE1E4"/><path d="M1098 673h64M1107 673v-44M1122 673v-44M1138 673v-44M1153 673v-44M1095 629l35-22 35 22z" fill="none" stroke="#F45C6B" stroke-width="6" stroke-linejoin="round"/>
+<text x="1210" y="630" class="label">공공기관 · 지자체</text>
+<text x="1210" y="673" class="body">공식 재난·안전정보</text>
+<text x="1210" y="708" class="body">행정·지원체계 연결</text>
+
+<rect x="265" y="815" width="1070" height="52" rx="18" fill="#EAF7F1"/>
+<text x="800" y="850" text-anchor="middle" class="body" style="font-weight:750">민간의 서비스 경험과 공공의 검증된 정보가 연결될 때, 현장의 대응력이 높아집니다.</text>
+</svg>
