@@ -8,6 +8,57 @@
   - `functional-poc-v1-progress.md`
 - 목적: SafeCircle을 특정 LLM의 프롬프트가 아니라, **고유한 판단 기준·스킬·데이터·검증 루프를 가진 상호이해 에이전트**로 정의한다.
 
+## 0. North Star — SafeCircle is an Agentic System
+
+SafeCircle의 최우선 목표는 “AI 기능이 많은 서비스”가 아니다.
+
+> **외부에서 공급받는 AI 모델을 SafeCircle의 목적·정책·스킬·지식·검증체계 안에서 안정적으로 운영하는 Agentic System을 만드는 것**이 제품의 최상위 목표다.
+
+따라서 핵심 경쟁력은 모델 자체가 아니라 다음 운영 능력에 있다.
+
+1. 어떤 상황인지 판단한다.
+2. 어떤 Skill을 조합할지 결정한다.
+3. 어떤 지식과 정책을 모델에 제공할지 선택한다.
+4. 모델 결과를 그대로 믿지 않고 검증한다.
+5. 실패하면 재시도·fallback·사람/공식정보로 전환한다.
+6. 각 실행을 Trace/Eval로 측정한다.
+7. 실제 사용자 피드백으로 Skill·Policy·Knowledge를 개선한다.
+
+SafeCircle의 구조적 목표:
+
+```
+AI Provider
+    ↓
+SafeCircle Agent Runtime
+    ├─ Scenario / Risk Routing
+    ├─ Skill Orchestration
+    ├─ Policy Engine
+    ├─ Knowledge Retrieval
+    ├─ Model Adapter
+    ├─ Response Validator
+    ├─ Fallback / Escalation
+    └─ Trace / Eval / Feedback
+    ↓
+User Action
+```
+
+### 제품 우선순위 원칙
+
+기능 추가보다 아래 질문을 먼저 해결한다.
+
+- 이 기능은 어떤 Skill인가?
+- 언제 실행되는가?
+- 다른 Skill과 어떤 순서로 조합되는가?
+- 어떤 Policy가 개입하는가?
+- 어떤 Knowledge를 신뢰할 수 있는가?
+- 모델이 잘못 답하면 어떻게 검출하는가?
+- 실패 시 어디로 전환하는가?
+- 결과 품질을 어떤 Eval로 측정하는가?
+- 실제 운영에서 비용·지연·오류를 어떻게 관찰하는가?
+
+즉, 서비스 화면은 Agent Harness를 검증하는 **실제 장면(surface)** 이고,
+Harness 운영체계가 SafeCircle의 **core product**다.
+
 ---
 
 ## 1. 핵심 정의
@@ -794,3 +845,78 @@ SafeCircle Agent Harness v1은 다음을 만족할 때 완료로 본다.
 - `unknowns`와 확인 행동을 핵심 제품 기능으로 취급한다.
 - 안전/재난은 생성형 AI보다 승인정보가 우선한다.
 - 사용자 피드백과 공식정보, 상황 패턴을 서로 다른 신뢰 계층으로 유지한다.
+
+
+## 16. Agent Operations Model
+
+SafeCircle Harness는 코드 구조만으로 완성되지 않는다. 운영 루프를 제품 기능으로 본다.
+
+### Observe
+수집:
+- scenario 분포
+- skill 실행 비율
+- validator fail
+- fallback
+- latency
+- provider error
+- 비용
+- user helpfulness
+
+원문 대화를 기본 telemetry로 저장하지 않는다.
+
+### Evaluate
+대표 Eval Pack을 지속 실행한다.
+
+- regression
+- safety
+- stereotype
+- official-boundary
+- ambiguity
+- multilingual
+- adversarial
+
+### Improve
+개선 단위:
+
+- prompt가 아니라 Skill contract
+- 단일 응답이 아니라 Router/Policy
+- 모델 변경이 아니라 provider benchmark
+- 임시 예외가 아니라 test/eval case 추가
+
+### Promote
+변경은 다음 순서로 승격한다.
+
+```
+local test
+→ eval pass
+→ preview
+→ scenario replay
+→ closed pilot
+→ production
+```
+
+### Rollback
+Agent 품질 저하 시:
+
+- provider/model rollback
+- skill version rollback
+- policy rollback
+- knowledge version rollback
+
+이 가능해야 한다.
+
+---
+
+## 17. 최우선 개발 판단 기준
+
+새 기능 요청이 들어오면 다음 순서로 판단한다.
+
+1. 기존 Skill 조합으로 해결 가능한가?
+2. 새 Skill이 필요한가?
+3. Router 기준 변경이 필요한가?
+4. Policy 변경이 필요한가?
+5. Knowledge가 부족한가?
+6. Validator/Eval이 부족한가?
+7. 그 다음에 UI 기능을 추가한다.
+
+SafeCircle은 **기능 중심 앱이 아니라 Agent Runtime을 서비스 장면에 적용하는 시스템**으로 개발한다.
